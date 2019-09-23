@@ -10760,62 +10760,61 @@
               )
             }
             const r = e =>
-              function(t, n, r) {
+              (function(t, n, r) {
                 if ("ObjectPattern" != t.type)
                   return "Property" === t.type
                     ? this.checkLVal(t.value, n, r)
                     : e.apply(this, arguments)
                 for (let e of t.properties) this.checkLVal(e, n, r)
-              }
-            return (
-              (e.plugins.objectSpread = function objectSpreadPlugin(e) {
-                ;(n.parseObj = parseObj),
-                  e.extend("checkLVal", r),
-                  e.extend(
-                    "toAssignable",
-                    e =>
-                      function(t, n) {
-                        if (this.options.ecmaVersion >= 6 && t) {
-                          if ("ObjectExpression" == t.type) {
-                            t.type = "ObjectPattern"
-                            for (let e of t.properties) this.toAssignable(e, n)
-                            return t
-                          }
-                          if ("Property" === t.type)
-                            return (
-                              "init" !== t.kind &&
-                                this.raise(
-                                  t.key.start,
-                                  "Object pattern can't contain getter or setter"
-                                ),
-                              this.toAssignable(t.value, n)
-                            )
-                          if ("SpreadElement" === t.type)
-                            return (
-                              (t.type = "RestElement"),
-                              this.toAssignable(t.argument, n)
-                            )
+              })
+            return (e.plugins.objectSpread = function objectSpreadPlugin(e) {
+              ;(n.parseObj = parseObj),
+                e.extend("checkLVal", r),
+                e.extend(
+                  "toAssignable",
+                  e =>
+                    (function(t, n) {
+                      if (this.options.ecmaVersion >= 6 && t) {
+                        if ("ObjectExpression" == t.type) {
+                          t.type = "ObjectPattern"
+                          for (let e of t.properties) this.toAssignable(e, n)
+                          return t
                         }
-                        return e.apply(this, arguments)
+                        if ("Property" === t.type)
+                          return (
+                            "init" !== t.kind &&
+                              this.raise(
+                                t.key.start,
+                                "Object pattern can't contain getter or setter"
+                              ),
+                            this.toAssignable(t.value, n)
+                          )
+                        if ("SpreadElement" === t.type)
+                          return (
+                            (t.type = "RestElement"),
+                            this.toAssignable(t.argument, n)
+                          )
                       }
-                  ),
-                  e.extend(
-                    "checkPatternExport",
-                    e =>
-                      function(t, n) {
-                        if ("ObjectPattern" != n.type)
-                          return "Property" === n.type
-                            ? this.checkPatternExport(t, n.value)
-                            : "RestElement" === n.type
-                              ? this.checkPatternExport(t, n.argument)
-                              : void e.apply(this, arguments)
-                        for (let e of n.properties)
-                          this.checkPatternExport(t, e)
-                      }
-                  )
-              }),
-              e
-            )
+                      return e.apply(this, arguments)
+                    })
+                ),
+                e.extend(
+                  "checkPatternExport",
+                  e =>
+                    (function(t, n) {
+                      if ("ObjectPattern" != n.type)
+                        return "Property" === n.type
+                          ? this.checkPatternExport(t, n.value)
+                          : "RestElement" === n.type
+                            ? this.checkPatternExport(t, n.argument)
+                            : void e.apply(this, arguments)
+                      for (let e of n.properties)
+                        this.checkPatternExport(t, e)
+                    })
+                )
+            }),
+            e
+          ;
           },
           function(e) {
             var t = e.tokTypes,
@@ -28750,9 +28749,9 @@
                   null != e.type.prototype &&
                   !0 === e.type.prototype.unstable_isAsyncReactComponent &&
                   (e.internalContextTag |= 1),
-                "function" == typeof r.componentWillMount &&
+                "function" == typeof r.UNSAFE_componentWillMount &&
                   ((o = r.state),
-                  r.componentWillMount(),
+                  r.UNSAFE_componentWillMount(),
                   o !== r.state && i.enqueueReplaceState(r, r.state, null),
                   (o = e.updateQueue),
                   null !== o && (r.state = Je(n, e, o, r, s, t))),
@@ -28768,10 +28767,10 @@
                 c = ke(t)
               if (
                 ((c = me(t, c)),
-                "function" != typeof s.componentWillReceiveProps ||
+                "function" != typeof s.UNSAFE_componentWillReceiveProps ||
                   (a === l && u === c) ||
                   ((u = s.state),
-                  s.componentWillReceiveProps(l, c),
+                  s.UNSAFE_componentWillReceiveProps(l, c),
                   s.state !== u && i.enqueueReplaceState(s, s.state, null)),
                 (u = t.memoizedState),
                 (n =
@@ -28810,24 +28809,23 @@
                         _(u, n)
                       )
               }
-              return (
-                d
-                  ? ("function" == typeof s.componentWillUpdate &&
-                      s.componentWillUpdate(l, n, c),
-                    "function" == typeof s.componentDidUpdate &&
-                      (t.effectTag |= 4))
-                  : ("function" != typeof s.componentDidUpdate ||
-                      (a === e.memoizedProps && u === e.memoizedState) ||
-                      (t.effectTag |= 4),
-                    r(t, l),
-                    o(t, n)),
-                (s.props = l),
-                (s.state = n),
-                (s.context = c),
-                d
-              )
+              return d
+                ? ("function" == typeof s.UNSAFE_componentWillUpdate &&
+                    s.UNSAFE_componentWillUpdate(l, n, c),
+                  "function" == typeof s.componentDidUpdate &&
+                    (t.effectTag |= 4))
+                : ("function" != typeof s.componentDidUpdate ||
+                    (a === e.memoizedProps && u === e.memoizedState) ||
+                    (t.effectTag |= 4),
+                  r(t, l),
+                  o(t, n)),
+              (s.props = l),
+              (s.state = n),
+              (s.context = c),
+              d
+            ;
             },
-          }
+          };
         })(
           r,
           o,
@@ -42984,20 +42982,19 @@
                   x(r, n)
                 )
               }
-              return (
-                (WithPropsOnChange.prototype.componentWillReceiveProps = function componentWillReceiveProps(
-                  e
-                ) {
-                  i(this.props, e) && (this.computedProps = t(e))
-                }),
-                (WithPropsOnChange.prototype.render = function render() {
-                  return o(b({}, this.props, this.computedProps))
-                }),
-                WithPropsOnChange
-              )
+              return (WithPropsOnChange.prototype.UNSAFE_componentWillReceiveProps = function componentWillReceiveProps(
+                e
+              ) {
+                i(this.props, e) && (this.computedProps = t(e))
+              }),
+              (WithPropsOnChange.prototype.render = function render() {
+                return o(b({}, this.props, this.computedProps))
+              }),
+              WithPropsOnChange
+            ;
             })(r.Component)
           return a
-        }
+        };
       },
       C = function mapValues(e, t) {
         var n = {}
@@ -43020,15 +43017,14 @@
                   x(n, t)
                 )
               }
-              return (
-                (WithHandlers.prototype.componentWillReceiveProps = function componentWillReceiveProps() {
-                  this.cachedHandlers = {}
-                }),
-                (WithHandlers.prototype.render = function render() {
-                  return n(b({}, this.props, this.handlers))
-                }),
-                WithHandlers
-              )
+              return (WithHandlers.prototype.UNSAFE_componentWillReceiveProps = function componentWillReceiveProps() {
+                this.cachedHandlers = {}
+              }),
+              (WithHandlers.prototype.render = function render() {
+                return n(b({}, this.props, this.handlers))
+              }),
+              WithHandlers
+            ;
             })(r.Component),
             i = function _initialiseProps() {
               var t = this
@@ -43048,7 +43044,7 @@
                 ))
             }
           return o
-        }
+        };
       },
       E = function defaultProps(e) {
         return function(t) {
@@ -43438,21 +43434,20 @@
           function Sink() {
             return y(this, Sink), x(this, t.apply(this, arguments))
           }
-          return (
-            (Sink.prototype.componentWillMount = function componentWillMount() {
-              e(this.props)
-            }),
-            (Sink.prototype.componentWillReceiveProps = function componentWillReceiveProps(
-              t
-            ) {
-              e(t)
-            }),
-            (Sink.prototype.render = function render() {
-              return null
-            }),
-            Sink
-          )
-        })(r.Component)
+          return (Sink.prototype.UNSAFE_componentWillMount = function componentWillMount() {
+            e(this.props)
+          }),
+          (Sink.prototype.UNSAFE_componentWillReceiveProps = function componentWillReceiveProps(
+            t
+          ) {
+            e(t)
+          }),
+          (Sink.prototype.render = function render() {
+            return null
+          }),
+          Sink
+        ;
+        })(r.Component);
       },
       X = function componentFromProp(e) {
         var t = function Component$$1(t) {
@@ -43527,37 +43522,36 @@
                 x(i, o)
               )
             }
-            return (
-              (ComponentFromStream.prototype.componentWillMount = function componentWillMount() {
-                var e = this
-                ;(this.subscription = this.vdom$.subscribe({
-                  next: function next(t) {
-                    e.setState({ vdom: t })
-                  },
-                })),
-                  this.propsEmitter.emit(this.props)
-              }),
-              (ComponentFromStream.prototype.componentWillReceiveProps = function componentWillReceiveProps(
-                e
-              ) {
-                this.propsEmitter.emit(e)
-              }),
-              (ComponentFromStream.prototype.shouldComponentUpdate = function shouldComponentUpdate(
-                e,
-                t
-              ) {
-                return t.vdom !== this.state.vdom
-              }),
-              (ComponentFromStream.prototype.componentWillUnmount = function componentWillUnmount() {
-                this.propsEmitter.emit(), this.subscription.unsubscribe()
-              }),
-              (ComponentFromStream.prototype.render = function render() {
-                return this.state.vdom
-              }),
-              ComponentFromStream
-            )
-          })(r.Component)
-        }
+            return (ComponentFromStream.prototype.UNSAFE_componentWillMount = function componentWillMount() {
+              var e = this
+              ;(this.subscription = this.vdom$.subscribe({
+                next: function next(t) {
+                  e.setState({ vdom: t })
+                },
+              })),
+                this.propsEmitter.emit(this.props)
+            }),
+            (ComponentFromStream.prototype.UNSAFE_componentWillReceiveProps = function componentWillReceiveProps(
+              e
+            ) {
+              this.propsEmitter.emit(e)
+            }),
+            (ComponentFromStream.prototype.shouldComponentUpdate = function shouldComponentUpdate(
+              e,
+              t
+            ) {
+              return t.vdom !== this.state.vdom
+            }),
+            (ComponentFromStream.prototype.componentWillUnmount = function componentWillUnmount() {
+              this.propsEmitter.emit(), this.subscription.unsubscribe()
+            }),
+            (ComponentFromStream.prototype.render = function render() {
+              return this.state.vdom
+            }),
+            ComponentFromStream
+          ;
+          })(r.Component);
+        };
       },
       ie = function componentFromStream(e) {
         return oe(re)(e)
